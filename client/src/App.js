@@ -1,50 +1,36 @@
-import React, { useEffect, useState } from "react"
+import ListGroup from "./components/ListGroup";
+import { TaskForm } from "./components/TaskForm";
+import { Counter } from "./components/Counter";
 
 const App = () => {
-  const [users, setUsers] = useState([])
-
-  useEffect (() => {
-    fetch("/api")
-      .then(response => {
-        return response.json()
-      })
-      .then(data => {
-        setUsers(data)
-      })
-  })
-
   const addUser = () => {
     fetch("/api/AddData", {
-      method: 'POST'
+      method: "POST",
     });
-  }
+  };
 
   const deleteUser = () => {
     fetch("/api/DeleteData", {
-      method: 'DELETE'
+      method: "DELETE",
     });
-  }
+  };
   const changeDates = () => {
     fetch("/api/Updatedata", {
-      method: 'PUT'
+      method: "PUT",
     });
-  }
+  };
 
   return (
     <div>
       <button onClick={addUser}>Add user</button>
       <button onClick={deleteUser}>Delete user</button>
       <button onClick={changeDates}>Change Dates</button>
+      <ListGroup />
+      <TaskForm />
+      <Counter />
 
-      {users.length > 0 && (
-        <ul>
-          {users.map(user => (
-            <li key={user.id}>{user.name}, {user.until_date}</li>
-          ))}
-        </ul>
-      )}
     </div>
   );
-}
+};
 
 export default App;
