@@ -1,19 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-function ListGroup() {
-  const [elements, setElements] = useState([]);
+function ListGroup(props) {
   const [selecteIndex, setSelectedIndex] = useState(-1);
-
-  useEffect(() => {
-    fetch("/api")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setElements(data);
-      });
-  });
-
+  let elements = props.value;
   return (
     <>
       <h1>To do</h1>
@@ -24,14 +13,25 @@ function ListGroup() {
           {elements.map((elem, index) => (
             <>
               <li
-                className={selecteIndex === index ? "list-group-item active" : "list-group-item"}
+                className={
+                  selecteIndex === index
+                    ? "list-group-item active"
+                    : "list-group-item"
+                }
                 key={elem._id}
-                onClick={() => {setSelectedIndex(index)}}
+                onClick={() => {
+                  setSelectedIndex(index);
+                }}
               >
                 <input className="form-check-input me-1" type="checkbox" />
                 <label>{elem.name}</label>
               </li>
-              {selecteIndex === index && <ul><li>Date: {elem.until_date}</li></ul>}
+              {selecteIndex === index && (
+                <ul>
+                  <li>description: {elem.description}</li>
+                  <li>do until: {elem.finish_date}</li>
+                </ul>
+              )}
             </>
           ))}
         </ul>
