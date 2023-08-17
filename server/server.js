@@ -1,3 +1,4 @@
+var bodyParser = require('body-parser')
 const express = require('express');
 const app = express()
 
@@ -39,12 +40,12 @@ async function updateCollection(res) {
   }
 }
 // Create object
-async function createCollection(res) {
+async function createCollection(res, res_body) {
   const client = new MongoClient(uri);
   try {
     const database = client.db('mydb');
     const product = database.collection("mycollection");
-    var new_obj = { name: "Udelat kolac", until_date: Date()};
+    var new_obj = res_body;
     objects = await product.insertOne(new_obj)
     res.send("New object added");
   } catch (err) {
@@ -69,6 +70,8 @@ async function deleteCollection(res) {
   }
 }
 
+app.use(bodyParser.json())
+
 app.get('/api', (req, res) => {
   listCollection(res);
    
@@ -77,7 +80,7 @@ app.put('/api/Updatedata', (req, res) => {
     updateCollection(res);
 });
 app.post('/api/AddData', (req, res) => {
-    createCollection(res);
+    createCollection(res, req.body);
 });
 app.delete('/api/DeleteData', (req, res) => {
     deleteCollection(res);

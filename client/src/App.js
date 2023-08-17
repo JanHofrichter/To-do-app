@@ -1,37 +1,28 @@
 import React, { useState, useEffect } from "react";
-import ListGroup from "./components/ListGroup";
 import { Counter } from "./components/Counter";
 
-const App = () => {
-  // all elemetns
-  const [elements, setElements] = useState([]);
-
+export default function App (props) {
   // element properties
   const [newName, setNewName] = useState("");
   const [newDescr, setNewDescr] = useState("");
   const [newDate, setNewDate] = useState("");
 
-  useEffect(() => {
-    fetch("/api")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setElements(data);
-      });
-  }, []);
-
   const addUser = () => {
     fetch("/api/AddData", {
       method: "POST",
+      body: JSON.stringify({
+        _id: crypto.randomUUID(),
+        name: newName,
+        description: newDescr,
+        finish_date: newDate,
+        created_date: Date(),
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
     });
   };
 
-  const deleteUser = () => {
-    fetch("/api/DeleteData", {
-      method: "DELETE",
-    });
-  };
   const changeDates = () => {
     fetch("/api/Updatedata", {
       method: "PUT",
@@ -40,24 +31,12 @@ const App = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setElements((currentElements) => {
-      return [
-        ...currentElements,
-        {
-          _id: crypto.randomUUID(),
-          name: newName,
-          description: newDescr,
-          finish_date: newDate,
-          created_date: Date(),
-        },
-      ]
-    });
+    props.onsubmit(newName, newDescr, newDate);
+    setNewName("");
   }
-  console.log(elements);
   return (
     <>
       <div>
-        <button onClick={deleteUser}>Delete user</button>
         <button onClick={changeDates}>Change Dates</button>
       </div>
       <form onSubmit={handleSubmit}>
@@ -66,6 +45,7 @@ const App = () => {
           <br />
           <input
             type="text"
+            name="name"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
@@ -75,6 +55,7 @@ const App = () => {
           <br />
           <input
             type="text"
+            name="description"
             value={newDescr}
             onChange={(e) => setNewDescr(e.target.value)}
           />
@@ -84,6 +65,7 @@ const App = () => {
           <br />
           <input
             type="date"
+            name="date_until"
             value={newDate}
             onChange={(e) => setNewDate(e.target.value)}
             min="2023-07-01"
@@ -92,10 +74,6 @@ const App = () => {
         <br />
         <button onClick={addUser}>Create Task</button>
       </form>
-      <ListGroup value={elements} />
-      {/* <Counter /> */}
     </>
   );
 };
-
-export default App;
