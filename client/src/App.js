@@ -1,79 +1,77 @@
 import React, { useState, useEffect } from "react";
-import { Counter } from "./components/Counter";
+import FormGroup from "./components/FormGroup"
+import ToDoList from "./components/ToDoList";
 
-export default function App (props) {
-  // element properties
-  const [newName, setNewName] = useState("");
-  const [newDescr, setNewDescr] = useState("");
-  const [newDate, setNewDate] = useState("");
+export default function App() {
+  const [elements, setElements] = useState([]);
 
-  const addUser = () => {
-    fetch("/api/AddData", {
-      method: "POST",
-      body: JSON.stringify({
-        _id: crypto.randomUUID(),
-        name: newName,
-        description: newDescr,
-        finish_date: newDate,
-        created_date: Date(),
-      }),
+  useEffect(() => {
+    fetch("/api/ListTasks")
+      .then((response) => {
+        console.log(response.status)
+        return response.json();
+      })
+      .then((data) => {
+        setElements(data);
+      });
+  }, []);
+
+  function addElements (name, description, date, id) {
+    setElements((currentElements) => {
+      return [
+        ...currentElements,
+        {
+          _id: id,
+          name: name,
+          description: description,
+          finish_date: date,
+          created_date: Date(),
+        },
+      ];
+    });
+  }
+
+  function deleteTask(id) {
+    fetch("/api/DeleteTask", {
+      method: "DELETE",
+      body: JSON.stringify({ _id: id }),
       headers: {
         "Content-type": "application/json",
       },
+    }).then((response) => {
+      console.log(response.status);
+      if (response.status === 200) {
+        deleteElem(id)
+        console.log("INFO - element deleted");
+      } else {
+        console.log("ERROR - element failed to delete");
+      }
     });
-  };
-
-  const changeDates = () => {
-    fetch("/api/Updatedata", {
-      method: "PUT",
-    });
-  };
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    props.onsubmit(newName, newDescr, newDate);
-    setNewName("");
   }
+
+  function toggleElem(id, completed) {
+    setElements((currentElements) => {
+      return currentElements.map((elem) => {
+        if (elem._id === id) {
+          return { ...elem, completed };
+        }
+        return elem;
+      });
+    });
+  }
+
+  function deleteElem(id) {
+    setElements((currentElements) => {
+      return currentElements.filter((elem) => elem._id !== id);
+    });
+  }
+
   return (
     <>
-      <div>
-        <button onClick={changeDates}>Change Dates</button>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Task name:</label>
-          <br />
-          <input
-            type="text"
-            name="name"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Description:</label>
-          <br />
-          <input
-            type="text"
-            name="description"
-            value={newDescr}
-            onChange={(e) => setNewDescr(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Finish until:</label>
-          <br />
-          <input
-            type="date"
-            name="date_until"
-            value={newDate}
-            onChange={(e) => setNewDate(e.target.value)}
-            min="2023-07-01"
-          />
-        </div>
-        <br />
-        <button onClick={addUser}>Create Task</button>
-      </form>
+      <FormGroup addElements={addElements}/>
+      {/* <button onClick={deleteUser(1)}></button> */}
+      <h1>To do</h1>
+      <ToDoList elements={elements} toggleElem={toggleElem} deleteElem={deleteElem} deleteTask={deleteTask}/>
     </>
   );
-};
+}
