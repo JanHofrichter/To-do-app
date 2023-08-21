@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import FormGroup from "./FormGroup";
+
 export function ToDoItem({
   _id,
   index,
@@ -9,25 +12,32 @@ export function ToDoItem({
   deleteTask,
   setSelectedIndex,
   selecteIndex,
+  onClick
+
 }) {
+  const [newDescr, setNewDescr] = useState("");
+  const [newDate, setNewDate] = useState("");
 
   return (
     <>
-      <li
+      <button
         className={
-          selecteIndex === index ? "list-group-item list-group-item-primary" : "list-group-item"
+          selecteIndex === index
+            ? "list-group-item list-group-item-primary"
+            : "list-group-item"
         }
         onClick={() => {
           setSelectedIndex(index);
+          onClick();
         }}
       >
         <input
-          className="form-check-input me-1"
+          className="form-check-input me-1 left"
           checked={completed}
           onChange={(e) => toggleElem(_id, e.target.checked)}
           type="checkbox"
         />
-        <label>{name}</label>
+        <label className="left">{name}</label>
         <button
           onClick={() => {
             deleteTask(_id);
@@ -35,14 +45,7 @@ export function ToDoItem({
         >
           Delete user
         </button>
-      </li>
-      {selecteIndex === index && (
-        <ul>
-          <li>ID: {_id}</li>
-          <li>description: {description}</li>
-          <li>do until: {finish_date}</li>
-        </ul>
-      )}
+      </button>
     </>
   );
 }

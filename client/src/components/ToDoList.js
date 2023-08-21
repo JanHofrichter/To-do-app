@@ -1,6 +1,12 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import { ToDoItem } from "./ToDoItem";
-export default function ToDoList({ elements, toggleElem, deleteElem, deleteTask }) {
+export default function ToDoList({
+  elements,
+  toggleElem,
+  deleteElem,
+  deleteTask,
+  handleTaskClick,
+}) {
   const [selecteIndex, setSelectedIndex] = useState(-1);
 
   return (
@@ -17,6 +23,7 @@ export default function ToDoList({ elements, toggleElem, deleteElem, deleteTask 
             toggleElem={toggleElem}
             deleteElem={deleteElem}
             deleteTask={deleteTask}
+            onClick={() => handleTaskClick(elem)}
           />
         );
       })}
