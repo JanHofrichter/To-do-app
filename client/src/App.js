@@ -5,15 +5,15 @@ import AddTask from "./components/AddTask";
 
 export default function App() {
   const [elements, setElements] = useState([]);
-  const [selectedTask, setSelectedTask] = useState({name: "", description: "", finish_date: ""});
-  // const [newName, setNewName] = useState(selectedTask.name);
-  // const [newDescr, setNewDescr] = useState(selectedTask.description);
-  // const [newDate, setNewDate] = useState(selectedTask.final_date);
 
+  const [newID, setNewID] = useState(null);
+  const [newName, setNewName] = useState(null);
+  const [newDescr, setNewDescr] = useState("");
+  const [newDate, setNewDate] = useState("");
 
-  const handleTaskClick = (data) => {
-    setSelectedTask(data);
-  };
+  // const handleTaskClick = (data) => {
+  //   setNewName(data);
+  // };
 
   useEffect(() => {
     fetch("/api/ListTasks")
@@ -41,34 +41,16 @@ export default function App() {
     });
   }
 
-  function deleteTask(id) {
-    fetch("/api/DeleteTask", {
-      method: "DELETE",
-      body: JSON.stringify({ _id: id }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }).then((response) => {
-      console.log(response.status);
-      if (response.status === 200) {
-        deleteElem(id);
-        console.log("INFO - element deleted");
-      } else {
-        console.log("ERROR - element failed to delete");
-      }
-    });
-  }
-
-  function toggleElem(id, completed) {
-    setElements((currentElements) => {
-      return currentElements.map((elem) => {
-        if (elem._id === id) {
-          return { ...elem, completed };
-        }
-        return elem;
-      });
-    });
-  }
+  // function toggleElem(id, completed) {
+  //   setElements((currentElements) => {
+  //     return currentElements.map((elem) => {
+  //       if (elem._id === id) {
+  //         return { ...elem, completed };
+  //       }
+  //       return elem;
+  //     });
+  //   });
+  // }
 
   function deleteElem(id) {
     setElements((currentElements) => {
@@ -76,26 +58,53 @@ export default function App() {
     });
   }
 
+  function updateElem(id, name, description, date) {
+    setElements((currentElements) => {
+      currentElements.map(elem => {
+        if (elem._id === id){
+          elem.name = name;
+          elem.description = description;
+          elem.finish_date = date
+        }
+        return null
+      })
+      return currentElements
+    });
+  }
+
   return (
     <>
       <div className="container">
-        <div className="fourth">
-        </div>
+        <div className="fourth"></div>
         <div className="half">
           {/* <FormGroup addElements={addElements} /> */}
           {/* <button onClick={deleteUser(1)}></button> */}
-          <h1>To do</h1>
+          <h1>To-Do-App</h1>
           <AddTask addElements={addElements} />
           <ToDoList
             elements={elements}
-            toggleElem={toggleElem}
+            //toggleElem={toggleElem}
             deleteElem={deleteElem}
-            deleteTask={deleteTask}
-            handleTaskClick = {handleTaskClick}
+            setNewName={setNewName}
+            setNewDescr={setNewDescr}
+            setNewDate={setNewDate}
+            setNewID={setNewID}
           />
         </div>
         <div className="fourth">
-          {selectedTask != null && <FormGroup selectedTask={selectedTask}/>}
+          {newName != null && (
+            <FormGroup
+            updateElem={updateElem}
+            setNewName={setNewName}
+            newName={newName}
+            setNewDescr={setNewDescr}
+            newDescr={newDescr}
+            setNewDate={setNewDate}
+            newDate={newDate}
+            newID={newID}
+
+            />
+          )}
         </div>
       </div>
     </>

@@ -1,6 +1,3 @@
-import React, { useState } from "react";
-import FormGroup from "./FormGroup";
-
 export function ToDoItem({
   _id,
   index,
@@ -8,15 +5,32 @@ export function ToDoItem({
   name,
   description,
   finish_date,
-  toggleElem,
-  deleteTask,
+  //toggleElem,
   setSelectedIndex,
   selecteIndex,
-  onClick
-
+  setNewName,
+  setNewID,
+  deleteElem,
+  setNewDescr,
+  setNewDate,
 }) {
-  const [newDescr, setNewDescr] = useState("");
-  const [newDate, setNewDate] = useState("");
+  function deleteTask(id) {
+    fetch("/api/DeleteTask", {
+      method: "DELETE",
+      body: JSON.stringify({ _id: id }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }).then((response) => {
+      console.log(response.status);
+      if (response.status === 200) {
+        deleteElem(id);
+        console.log("INFO - element deleted");
+      } else {
+        console.log("ERROR - element failed to delete");
+      }
+    });
+  }
 
   return (
     <>
@@ -28,13 +42,16 @@ export function ToDoItem({
         }
         onClick={() => {
           setSelectedIndex(index);
-          onClick();
+          setNewID(_id);
+          setNewName(name);
+          setNewDescr(description);
+          setNewDate(finish_date);
         }}
       >
         <input
           className="form-check-input me-1 left"
           checked={completed}
-          onChange={(e) => toggleElem(_id, e.target.checked)}
+          //onChange={(e) => toggleElem(_id, e.target.checked)}
           type="checkbox"
         />
         <label className="left">{name}</label>

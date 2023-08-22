@@ -39,22 +39,38 @@ async function listCollection(res) {
   }
 }
 // Update object
-// async function updateCollection(res) {
-//   const client = new MongoClient(uri);
-//   try {
-//     const database = client.db("mydb");
-//     const product = database.collection("mycollection");
-//     var myquery = { name: "Udelat kolac" };
-//     var newvalues = { $set: { until_date: Date() } };
-
-//     await product.updateMany(myquery, newvalues);
-//     res.send("Dates changed");
-//   } catch (err) {
-//     res.send(err);
-//   } finally {
-//     await client.close();
-//   }
-// }
+async function updateCollection(res, req_body) {
+  const client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
+  try {
+    const database = client.db("mydb");
+    const product = database.collection("mycollection");
+    var myquery = { _id: req_body._id };
+    var newvalues = { $set: req_body };
+    result = await product.updateMany(myquery, newvalues);
+    if (result["modifiedCount"] == 1) {
+      res.status(200).send(result);
+    } else {
+      res.status(404).send({ message: "Task not found" });
+    }
+  } catch (err) {
+    console.error(err);
+    if (err.name === "MongoNetworkError") {
+      res.status(500).send({ message: "Database connection error" });
+    } else if (err.name === "MongoError") {
+      res.status(500).send({ message: "Database query error" });
+    } else {
+      res.status(500).send({ message: "Unknown server error" });
+    }
+  } finally {
+    await client.close();
+  }
+}
 // Add object
 async function addElem(res, res_body) {
   const client = new MongoClient(uri, {
@@ -100,7 +116,7 @@ async function deleteElem(res, body_res) {
     if (result["deletedCount"] == 1) {
       res.status(200).send(result);
     } else {
-      res.status(404).send({ message: "Data not found" });
+      res.status(404).send({ message: "Task not found" });
     }
   } catch (err) {
     console.error(err);
@@ -121,9 +137,9 @@ app.use(bodyParser.json());
 app.get("/api/ListTasks", (req, res) => {
   listCollection(res);
 });
-// app.put('/api/Updatedata', (req, res) => {
-//     updateCollection(res);
-// });
+app.put("/api/Updatedata", (req, res) => {
+  updateCollection(res, req.body);
+});
 app.post("/api/AddTask", (req, res) => {
   addElem(res, req.body);
 });
