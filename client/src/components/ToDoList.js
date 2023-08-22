@@ -4,11 +4,10 @@ export default function ToDoList({
   elements,
   //toggleElem,
   deleteElem,
-  setNewName,
-  setNewID,
-  setNewDescr,
-  setNewDate
-
+  setname,
+  setID,
+  setdescr,
+  setdate,
 }) {
   const [selecteIndex, setSelectedIndex] = useState(-1);
 
@@ -25,11 +24,10 @@ export default function ToDoList({
             setSelectedIndex={setSelectedIndex}
             //toggleElem={toggleElem}
             deleteElem={deleteElem}
-            setNewName={setNewName}
-            setNewID={setNewID}
-            setNewDescr={setNewDescr}
-            setNewDate={setNewDate}
-
+            setname={setname}
+            setID={setID}
+            setdescr={setdescr}
+            setdate={setdate}
           />
         );
       })}

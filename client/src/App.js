@@ -6,10 +6,10 @@ import AddTask from "./components/AddTask";
 export default function App() {
   const [elements, setElements] = useState([]);
 
-  const [newID, setNewID] = useState(null);
-  const [newName, setNewName] = useState(null);
-  const [newDescr, setNewDescr] = useState("");
-  const [newDate, setNewDate] = useState("");
+  const [ID, setID] = useState(null);
+  const [name, setname] = useState(null);
+  const [descr, setdescr] = useState("");
+  const [date, setdate] = useState("");
 
   const [seed, setSeed] = useState(1);
   const reset = () => {
@@ -27,7 +27,7 @@ export default function App() {
       });
   }, []);
 
-  function addElements(name, description, date, id) {
+  function addElements(name, description, date, priority, id) {
     setElements((currentElements) => {
       return [
         ...currentElements,
@@ -36,6 +36,7 @@ export default function App() {
           name: name,
           description: description,
           finish_date: date,
+          priority: priority,
           created_date: Date(),
         },
       ];
@@ -72,7 +73,6 @@ export default function App() {
       return currentElements;
     });
   }
-
   return (
     <>
       <div className="container">
@@ -85,23 +85,23 @@ export default function App() {
             elements={elements}
             //toggleElem={toggleElem}
             deleteElem={deleteElem}
-            setNewName={setNewName}
-            setNewDescr={setNewDescr}
-            setNewDate={setNewDate}
-            setNewID={setNewID}
+            setname={setname}
+            setdescr={setdescr}
+            setdate={setdate}
+            setID={setID}
           />
         </div>
         <div className="fourth">
-          {newName != null && (
+          {name != null && (
             <FormGroup
               updateElem={updateElem}
-              setNewName={setNewName}
-              newName={newName}
-              setNewDescr={setNewDescr}
-              newDescr={newDescr}
-              setNewDate={setNewDate}
-              newDate={newDate}
-              newID={newID}
+              setname={setname}
+              name={name}
+              setdescr={setdescr}
+              descr={descr}
+              setdate={setdate}
+              date={date}
+              ID={ID}
               reset={reset}
             />
           )}

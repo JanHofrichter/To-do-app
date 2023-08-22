@@ -8,11 +8,11 @@ export function ToDoItem({
   //toggleElem,
   setSelectedIndex,
   selecteIndex,
-  setNewName,
-  setNewID,
+  setname,
+  setID,
   deleteElem,
-  setNewDescr,
-  setNewDate,
+  setdescr,
+  setdate,
 }) {
   function deleteTask(id) {
     fetch("/api/DeleteTask", {
@@ -42,10 +42,10 @@ export function ToDoItem({
         }
         onClick={() => {
           setSelectedIndex(index);
-          setNewID(_id);
-          setNewName(name);
-          setNewDescr(description);
-          setNewDate(finish_date);
+          setID(_id);
+          setname(name);
+          setdescr(description);
+          setdate(finish_date);
         }}
       >
         <input

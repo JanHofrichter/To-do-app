@@ -1,22 +1,23 @@
+import React, { useState, useEffect } from "react";
 export default function FormGroup({
   updateElem,
-  newName,
-  setNewName,
-  setNewDescr,
-  newDescr,
-  setNewDate,
-  newDate,
-  newID,
+  name,
+  setname,
+  setdescr,
+  descr,
+  setdate,
+  date,
+  ID,
   reset,
 }) {
   const updateTask = () => {
     fetch("/api/Updatedata", {
       method: "PUT",
       body: JSON.stringify({
-        _id: newID,
-        name: newName,
-        description: newDescr,
-        finish_date: newDate,
+        _id: ID,
+        name: name,
+        description: descr,
+        finish_date: date,
       }),
       headers: {
         "Content-type": "application/json",
@@ -24,7 +25,7 @@ export default function FormGroup({
     }).then((response) => {
       console.log(response.status);
       if (response.status === 200) {
-        updateElem(newID, newName, newDescr, newDate);
+        updateElem(ID, name, descr, date);
         reset();
         console.log("INFO - task updated");
       } else {
@@ -36,7 +37,6 @@ export default function FormGroup({
   function handleSubmit(e) {
     e.preventDefault();
   }
-
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -47,10 +47,22 @@ export default function FormGroup({
             className="form-control"
             type="text"
             name="name"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            value={name}
+            onChange={(e) => setname(e.target.value)}
           />
         </div>
+        {/* <div title="priority">
+          <label className="form-label">Priority: {priority}</label>
+          <br />
+          <select
+            onChange={(e) => setChosenPriority(e.target.value)}
+            value={chosenPriority}
+          >
+            <option value="Low">Low</option>
+            <option value="Mid">Mid</option>
+            <option value="High">High</option>
+          </select>
+        </div> */}
         <div>
           <label className="form-label">Description</label>
           <br />
@@ -60,8 +72,8 @@ export default function FormGroup({
             className="form-control"
             type="text"
             name="description"
-            value={newDescr}
-            onChange={(e) => setNewDescr(e.target.value)}
+            value={descr}
+            onChange={(e) => setdescr(e.target.value)}
           />
         </div>
         <div>
@@ -70,8 +82,8 @@ export default function FormGroup({
           <input
             type="date"
             name="date_until"
-            value={newDate}
-            onChange={(e) => setNewDate(e.target.value)}
+            value={date}
+            onChange={(e) => setdate(e.target.value)}
             min="2023-07-01"
           />
         </div>

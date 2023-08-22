@@ -24,7 +24,7 @@ export default function AddTask({ addElements }) {
     }).then((response) => {
       console.log(response.status);
       if (response.status === 200) {
-        addElements(name, "", "", id);
+        addElements(name, "", "", priority, id);
         console.log("INFO - element added");
       } else {
         console.log("ERROR - element failed to add");
@@ -37,7 +37,6 @@ export default function AddTask({ addElements }) {
     setName("");
   }
 
-  console.log(priority);
   return (
     <>
       <form onSubmit={handleSubmit}>
