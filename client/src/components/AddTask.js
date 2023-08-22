@@ -3,7 +3,8 @@ import React, { useState } from "react";
 
 export default function AddTask({ addElements }) {
   // element properties
-  const [newName, setNewName] = useState("");
+  const [name, setName] = useState("");
+  const [priority, setPriority] = useState("");
 
   const addUser = () => {
     const id = crypto.randomUUID();
@@ -11,9 +12,10 @@ export default function AddTask({ addElements }) {
       method: "POST",
       body: JSON.stringify({
         _id: id,
-        name: newName,
+        name: name,
         description: "",
         finish_date: "",
+        priority: priority,
         created_date: Date(),
       }),
       headers: {
@@ -22,7 +24,7 @@ export default function AddTask({ addElements }) {
     }).then((response) => {
       console.log(response.status);
       if (response.status === 200) {
-        addElements(newName, "", "", id);
+        addElements(name, "", "", id);
         console.log("INFO - element added");
       } else {
         console.log("ERROR - element failed to add");
@@ -30,16 +32,12 @@ export default function AddTask({ addElements }) {
     });
   };
 
-  // const changeDates = () => {
-  //   fetch("/api/Updatedata", {
-  //     method: "PUT",
-  //   });
-  // };
-
   function handleSubmit(e) {
     e.preventDefault();
-    setNewName("");
+    setName("");
   }
+
+  console.log(priority);
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -50,8 +48,8 @@ export default function AddTask({ addElements }) {
                 id="extend"
                 placeholder="Add task"
                 className="form-control"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 type="text"
               />
               <div className="input-group-append">
@@ -60,10 +58,18 @@ export default function AddTask({ addElements }) {
                 </button>
               </div>
             </div>
+            <div title="priority">
+              <select onChange={(e) => setPriority(e.target.value)}>
+                <option defaultValue=""></option>
+                <option value="Low">Low</option>
+                <option value="Mid">Mid</option>
+                <option value="High">High</option>
+              </select>
+            </div>
           </li>
         </ul>
       </form>
-      <br/>
+      <br />
     </>
   );
 }

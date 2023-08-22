@@ -11,9 +11,10 @@ export default function App() {
   const [newDescr, setNewDescr] = useState("");
   const [newDate, setNewDate] = useState("");
 
-  // const handleTaskClick = (data) => {
-  //   setNewName(data);
-  // };
+  const [seed, setSeed] = useState(1);
+  const reset = () => {
+    setSeed(Math.random());
+  };
 
   useEffect(() => {
     fetch("/api/ListTasks")
@@ -60,15 +61,15 @@ export default function App() {
 
   function updateElem(id, name, description, date) {
     setElements((currentElements) => {
-      currentElements.map(elem => {
-        if (elem._id === id){
+      currentElements.map((elem) => {
+        if (elem._id === id) {
           elem.name = name;
           elem.description = description;
-          elem.finish_date = date
+          elem.finish_date = date;
         }
-        return null
-      })
-      return currentElements
+        return null;
+      });
+      return currentElements;
     });
   }
 
@@ -77,11 +78,10 @@ export default function App() {
       <div className="container">
         <div className="fourth"></div>
         <div className="half">
-          {/* <FormGroup addElements={addElements} /> */}
-          {/* <button onClick={deleteUser(1)}></button> */}
           <h1>To-Do-App</h1>
           <AddTask addElements={addElements} />
           <ToDoList
+            key={seed}
             elements={elements}
             //toggleElem={toggleElem}
             deleteElem={deleteElem}
@@ -94,15 +94,15 @@ export default function App() {
         <div className="fourth">
           {newName != null && (
             <FormGroup
-            updateElem={updateElem}
-            setNewName={setNewName}
-            newName={newName}
-            setNewDescr={setNewDescr}
-            newDescr={newDescr}
-            setNewDate={setNewDate}
-            newDate={newDate}
-            newID={newID}
-
+              updateElem={updateElem}
+              setNewName={setNewName}
+              newName={newName}
+              setNewDescr={setNewDescr}
+              newDescr={newDescr}
+              setNewDate={setNewDate}
+              newDate={newDate}
+              newID={newID}
+              reset={reset}
             />
           )}
         </div>

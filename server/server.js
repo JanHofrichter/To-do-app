@@ -85,7 +85,11 @@ async function addElem(res, res_body) {
     const product = database.collection("mycollection");
     const new_obj = res_body;
     result = await product.insertOne(new_obj);
-    res.status(200).send(result);
+    if (result["insertedId"] != null) {
+      res.status(200).send(result);
+    } else {
+      res.status(404).send({ message: "Task not found" });
+    }
   } catch (err) {
     console.error(err);
     if (err.name === "MongoNetworkError") {
