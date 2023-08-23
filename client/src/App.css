@@ -16,8 +16,7 @@
   align-items: center;
 }
 .right {
-  display: flex;
-  justify-content: flex-end;
+  float: right;
 }
 .left {
   float: left;
@@ -27,4 +26,41 @@ button {
   float: right;
 }
 
+.inline-elements {
+  display: flex; /* Use flexbox to make the divs display in a row */
+  align-items: center; /* Align items vertically within the flex container */
+}
 
+.inline-elements > div {
+  margin-right: 20px; /* Add some spacing between the elements */
+}
+
+.clickable-button {
+  text-align: left;
+  float: right;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+.clickable-button:hover {
+  background-color: #ebebeb;
+}
+
+.delete-button {
+  margin-left: 10px;
+  background-color: #ff5858;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #ff0000;
+}

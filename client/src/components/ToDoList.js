@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { ToDoItem } from "./ToDoItem";
 export default function ToDoList({
   elements,
-  //toggleElem,
+  toggleElem,
   deleteElem,
-  setname,
-  setID,
-  setdescr,
-  setdate,
+  handleChange,
+  setSelected,
 }) {
   const [selecteIndex, setSelectedIndex] = useState(-1);
 
@@ -22,12 +20,10 @@ export default function ToDoList({
             key={elem._id}
             selecteIndex={selecteIndex}
             setSelectedIndex={setSelectedIndex}
-            //toggleElem={toggleElem}
+            toggleElem={toggleElem}
             deleteElem={deleteElem}
-            setname={setname}
-            setID={setID}
-            setdescr={setdescr}
-            setdate={setdate}
+            handleChange={handleChange}
+            setSelected={setSelected}
           />
         );
       })}

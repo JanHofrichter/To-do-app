@@ -3,20 +3,32 @@ import React, { useState } from "react";
 
 export default function AddTask({ addElements }) {
   // element properties
-  const [name, setName] = useState("");
-  const [priority, setPriority] = useState("");
+  const [newTask, setNewTask] = useState({
+    name: null,
+    description: null,
+    priority: null,
+    date: null,
+  });
+
+  const updateField = (fieldName, newValue) => {
+    setNewTask((prevFields) => ({
+      ...prevFields,
+      [fieldName]: newValue,
+    }));
+  };
 
   const addUser = () => {
+    const date_created = Date();
     const id = crypto.randomUUID();
     fetch("/api/AddTask", {
       method: "POST",
       body: JSON.stringify({
         _id: id,
-        name: name,
+        name: newTask.name,
         description: "",
-        finish_date: "",
-        priority: priority,
-        created_date: Date(),
+        date: newTask.date,
+        priority: newTask.priority,
+        created_date: date_created,
       }),
       headers: {
         "Content-type": "application/json",
@@ -24,7 +36,7 @@ export default function AddTask({ addElements }) {
     }).then((response) => {
       console.log(response.status);
       if (response.status === 200) {
-        addElements(name, "", "", priority, id);
+        addElements(id, date_created, newTask);
         console.log("INFO - element added");
       } else {
         console.log("ERROR - element failed to add");
@@ -34,7 +46,7 @@ export default function AddTask({ addElements }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setName("");
+    updateField("name", "");
   }
 
   return (
@@ -47,8 +59,8 @@ export default function AddTask({ addElements }) {
                 id="extend"
                 placeholder="Add task"
                 className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={newTask.name}
+                onChange={(e) => updateField("name", e.target.value)}
                 type="text"
               />
               <div className="input-group-append">
@@ -57,13 +69,26 @@ export default function AddTask({ addElements }) {
                 </button>
               </div>
             </div>
-            <div title="priority">
-              <select onChange={(e) => setPriority(e.target.value)}>
-                <option defaultValue=""></option>
-                <option value="Low">Low</option>
-                <option value="Mid">Mid</option>
-                <option value="High">High</option>
-              </select>
+            <div className="inline-elements">
+              <div title="priority">
+                <select
+                  onChange={(e) => updateField("priority", e.target.value)}
+                >
+                  <option defaultValue=""></option>
+                  <option value="Low">Low</option>
+                  <option value="Mid">Mid</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div>
+                <input
+                  type="date"
+                  name="date_until"
+                  value={newTask.date}
+                  onChange={(e) => updateField("date", e.target.value)}
+                  min="2022-01-01"
+                />
+              </div>
             </div>
           </li>
         </ul>

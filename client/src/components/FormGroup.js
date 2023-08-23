@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from "react";
 export default function FormGroup({
   updateElem,
-  name,
-  setname,
-  setdescr,
-  descr,
-  setdate,
-  date,
-  ID,
+  task,
+  updateField,
   reset,
+  setSelected,
+  selected,
 }) {
+  const options = [
+    { value: "", text: "---" },
+    { value: "Low", text: "Low" },
+    { value: "Mid", text: "Mid" },
+    { value: "High", text: "High" },
+  ];
   const updateTask = () => {
     fetch("/api/Updatedata", {
       method: "PUT",
       body: JSON.stringify({
-        _id: ID,
-        name: name,
-        description: descr,
-        finish_date: date,
+        _id: task.ID,
+        name: task.name,
+        description: task.description,
+        priority: selected,
+        date: task.date,
       }),
       headers: {
         "Content-type": "application/json",
@@ -25,7 +28,7 @@ export default function FormGroup({
     }).then((response) => {
       console.log(response.status);
       if (response.status === 200) {
-        updateElem(ID, name, descr, date);
+        updateElem(task, selected);
         reset();
         console.log("INFO - task updated");
       } else {
@@ -37,6 +40,7 @@ export default function FormGroup({
   function handleSubmit(e) {
     e.preventDefault();
   }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -47,22 +51,22 @@ export default function FormGroup({
             className="form-control"
             type="text"
             name="name"
-            value={name}
-            onChange={(e) => setname(e.target.value)}
+            value={task.name}
+            onChange={(e) => updateField("name", e.target.value)}
           />
         </div>
-        {/* <div title="priority">
-          <label className="form-label">Priority: {priority}</label>
-          <br />
+        <div>
           <select
-            onChange={(e) => setChosenPriority(e.target.value)}
-            value={chosenPriority}
+            value={selected}
+            onChange={(e) => setSelected(e.target.value)}
           >
-            <option value="Low">Low</option>
-            <option value="Mid">Mid</option>
-            <option value="High">High</option>
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.text}
+              </option>
+            ))}
           </select>
-        </div> */}
+        </div>
         <div>
           <label className="form-label">Description</label>
           <br />
@@ -72,8 +76,8 @@ export default function FormGroup({
             className="form-control"
             type="text"
             name="description"
-            value={descr}
-            onChange={(e) => setdescr(e.target.value)}
+            value={task.description}
+            onChange={(e) => updateField("description", e.target.value)}
           />
         </div>
         <div>
@@ -82,8 +86,8 @@ export default function FormGroup({
           <input
             type="date"
             name="date_until"
-            value={date}
-            onChange={(e) => setdate(e.target.value)}
+            value={task.date}
+            onChange={(e) => updateField("date", e.target.value)}
             min="2023-07-01"
           />
         </div>

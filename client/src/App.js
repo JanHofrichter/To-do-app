@@ -5,11 +5,26 @@ import AddTask from "./components/AddTask";
 
 export default function App() {
   const [elements, setElements] = useState([]);
+  const [tickedElements, setTickedElements] = useState([]);
+  const [selected, setSelected] = useState("");
+  const [task, setTask] = useState({
+    ID: null,
+    name: null,
+    description: null,
+    date: null,
+    priority: null,
+  });
 
-  const [ID, setID] = useState(null);
-  const [name, setname] = useState(null);
-  const [descr, setdescr] = useState("");
-  const [date, setdate] = useState("");
+  const updateField = (fieldName, newValue) => {
+    setTask((prevFields) => ({
+      ...prevFields,
+      [fieldName]: newValue,
+    }));
+  };
+
+  const handleChange = (updatedData) => {
+    setTask(updatedData);
+  };
 
   const [seed, setSeed] = useState(1);
   const reset = () => {
@@ -27,32 +42,43 @@ export default function App() {
       });
   }, []);
 
-  function addElements(name, description, date, priority, id) {
+  function addElements(id, date_created, newTask) {
     setElements((currentElements) => {
       return [
         ...currentElements,
         {
           _id: id,
-          name: name,
-          description: description,
-          finish_date: date,
-          priority: priority,
-          created_date: Date(),
+          name: newTask.name,
+          description: newTask.description,
+          date: newTask.date,
+          priority: newTask.priority,
+          created_date: date_created,
         },
       ];
     });
   }
 
-  // function toggleElem(id, completed) {
-  //   setElements((currentElements) => {
-  //     return currentElements.map((elem) => {
-  //       if (elem._id === id) {
-  //         return { ...elem, completed };
-  //       }
-  //       return elem;
-  //     });
-  //   });
-  // }
+  function toggleElem(id, name, description, date) {
+    setElements((currentElements) => {
+      return currentElements.map((elem) => {
+        if (elem._id === id) {
+          deleteElem(id);
+          setTickedElements((currentElements) => {
+            return [
+              ...currentElements,
+              {
+                _id: id,
+                name: name,
+                description: description,
+                finish_date: date,
+              },
+            ];
+          });
+        }
+        return elem;
+      });
+    });
+  }
 
   function deleteElem(id) {
     setElements((currentElements) => {
@@ -60,19 +86,21 @@ export default function App() {
     });
   }
 
-  function updateElem(id, name, description, date) {
+  function updateElem(task, selected) {
     setElements((currentElements) => {
       currentElements.map((elem) => {
-        if (elem._id === id) {
-          elem.name = name;
-          elem.description = description;
-          elem.finish_date = date;
+        if (elem._id === task.ID) {
+          elem.name = task.name;
+          elem.description = task.description;
+          elem.date = task.date;
+          elem.priority = selected;
         }
         return null;
       });
       return currentElements;
     });
   }
+
   return (
     <>
       <div className="container">
@@ -83,26 +111,25 @@ export default function App() {
           <ToDoList
             key={seed}
             elements={elements}
-            //toggleElem={toggleElem}
+            toggleElem={toggleElem}
             deleteElem={deleteElem}
-            setname={setname}
-            setdescr={setdescr}
-            setdate={setdate}
-            setID={setID}
+            handleChange={handleChange}
+            setSelected={setSelected}
           />
+          {tickedElements !== [] && <h1>Tickled Tasks</h1>}
+          {tickedElements.map((elem, index) => {
+            return <li>elem.name</li>;
+          })}
         </div>
         <div className="fourth">
-          {name != null && (
+          {task.name != null && (
             <FormGroup
               updateElem={updateElem}
-              setname={setname}
-              name={name}
-              setdescr={setdescr}
-              descr={descr}
-              setdate={setdate}
-              date={date}
-              ID={ID}
+              updateField={updateField}
+              task={task}
               reset={reset}
+              setSelected={setSelected}
+              selected={selected}
             />
           )}
         </div>

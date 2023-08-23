@@ -4,15 +4,14 @@ export function ToDoItem({
   completed,
   name,
   description,
-  finish_date,
-  //toggleElem,
+  date,
+  priority,
+  toggleElem,
   setSelectedIndex,
   selecteIndex,
-  setname,
-  setID,
   deleteElem,
-  setdescr,
-  setdate,
+  handleChange,
+  setSelected,
 }) {
   function deleteTask(id) {
     fetch("/api/DeleteTask", {
@@ -34,35 +33,42 @@ export function ToDoItem({
 
   return (
     <>
-      <button
+      <div
         className={
           selecteIndex === index
-            ? "list-group-item list-group-item-primary"
-            : "list-group-item"
+            ? "list-group-item list-group-item-primary clickable-button"
+            : "list-group-item clickable-button"
         }
         onClick={() => {
           setSelectedIndex(index);
-          setID(_id);
-          setname(name);
-          setdescr(description);
-          setdate(finish_date);
+          handleChange({
+            ID: _id,
+            name: name,
+            description: description,
+            date: date,
+            priority: priority,
+          });
+          setSelected(priority);
         }}
       >
         <input
           className="form-check-input me-1 left"
           checked={completed}
-          //onChange={(e) => toggleElem(_id, e.target.checked)}
+          onChange={(e) => toggleElem(_id, name, description, date)}
           type="checkbox"
         />
         <label className="left">{name}</label>
-        <button
-          onClick={() => {
-            deleteTask(_id);
-          }}
-        >
-          Delete user
-        </button>
-      </button>
+        <div>
+          <button
+            className="delete-button"
+            onClick={() => {
+              deleteTask(_id);
+            }}
+          >
+            Delete user
+          </button>
+        </div>
+      </div>
     </>
   );
 }
