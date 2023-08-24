@@ -1,4 +1,4 @@
-export default function ButtonComp({ label, func, buttonClass }) {
+export default function Button({ label, func, buttonClass }) {
   return (
     <div>
       <button className={buttonClass} onClick={() => func()}>

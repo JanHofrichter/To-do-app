@@ -1,4 +1,4 @@
-export default function InputComp({ value, func }) {
+export default function Input({ value, func }) {
   return (
     <input
       placeholder="Add task"

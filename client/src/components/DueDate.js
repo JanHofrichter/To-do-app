@@ -1,4 +1,4 @@
-export default function DateComp({ value, func }) {
+export default function DueDate({ value, func }) {
   return (
     <input
       type="date"
