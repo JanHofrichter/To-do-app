@@ -1,4 +1,4 @@
-import ButtonComp from "../components/Button/Button";
+import Button from "../components/Button";
 import { deleteTask } from "../api";
 
 export function ToDoItem({
@@ -9,13 +9,39 @@ export function ToDoItem({
   description,
   date,
   priority,
-  toggleElem,
   setSelectedIndex,
   selecteIndex,
-  deleteElem,
   handleChange,
-  setSelected,
+  setElements,
 }) {
+  // function toggleElem(id, name, description, date) {
+  //   setElements((currentElements) => {
+  //     return currentElements.map((elem) => {
+  //       if (elem._id === id) {
+  //         deleteElem(id);
+  //         setTickedElements((currentElements) => {
+  //           return [
+  //             ...currentElements,
+  //             {
+  //               _id: id,
+  //               name: name,
+  //               description: description,
+  //               finish_date: date,
+  //             },
+  //           ];
+  //         });
+  //       }
+  //       return elem;
+  //     });
+  //   });
+  // }
+
+  function deleteElem(id) {
+    setElements((currentElements) => {
+      return currentElements.filter((elem) => elem._id !== id);
+    });
+  }
+
   return (
     <>
       <div
@@ -33,17 +59,16 @@ export function ToDoItem({
             date: date,
             priority: priority,
           });
-          setSelected(priority);
         }}
       >
         <input
           className="form-check-input me-1 left"
           checked={completed}
-          onChange={(e) => toggleElem(_id, name, description, date)}
+          // onChange={(e) => toggleElem(_id, name, description, date)}
           type="checkbox"
         />
         <label className="left">{name}</label>
-        <ButtonComp
+        <Button
           label={"Delete"}
           func={() => deleteTask(_id, deleteElem)}
           buttonClass={"delete-button"}

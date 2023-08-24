@@ -25,14 +25,14 @@ export const addUser = (newTask, addElements) => {
   });
 };
 
-export const updateTask = (task, updateElem, selected, reset) => {
+export const updateTask = (task, updateElem, reset) => {
   fetch("/api/Updatedata", {
     method: "PUT",
     body: JSON.stringify({
       _id: task.ID,
       name: task.name,
       description: task.description,
-      priority: selected,
+      priority: task.priority,
       date: task.date,
     }),
     headers: {
@@ -41,7 +41,7 @@ export const updateTask = (task, updateElem, selected, reset) => {
   }).then((response) => {
     console.log(response.status);
     if (response.status === 200) {
-      updateElem(task, selected);
+      updateElem(task);
       reset();
       console.log("INFO - task updated");
     } else {

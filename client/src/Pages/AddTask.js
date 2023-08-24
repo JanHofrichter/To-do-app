@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import ButtonComp from "../components/Button/Button";
-import DateComp from "../components/Date/dateComp";
-import InputComp from "../components/Input/inputComp";
-
 import { addUser } from "../api";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import DueDate from "../components/DueDate";
 
-export default function AddTask({ addElements }) {
-  // element properties
+export default function AddTask({ setElements }) {
   const [newTask, setNewTask] = useState({
     name: "",
-    description: null,
+    description: "",
     priority: "",
     date: "",
   });
@@ -22,6 +20,22 @@ export default function AddTask({ addElements }) {
     console.log(fieldName, newValue);
   };
 
+  function addElements(id, date_created, newTask) {
+    setElements((currentElements) => {
+      return [
+        ...currentElements,
+        {
+          _id: id,
+          name: newTask.name,
+          description: newTask.description,
+          date: newTask.date,
+          priority: newTask.priority,
+          created_date: date_created,
+        },
+      ];
+    });
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     updateField("name", "");
@@ -33,11 +47,11 @@ export default function AddTask({ addElements }) {
         <ul className="list-group">
           <li className="list-group-item">
             <div className="input-group">
-              <InputComp
+              <Input
                 value={newTask.name}
                 func={(e) => updateField("name", e.target.value)}
               />
-              <ButtonComp
+              <Button
                 label={"Add"}
                 func={() => addUser(newTask, addElements)}
                 buttonClass={"btn btn-primary"}
@@ -48,14 +62,14 @@ export default function AddTask({ addElements }) {
                 <select
                   onChange={(e) => updateField("priority", e.target.value)}
                 >
-                  <option defaultValue=""></option>
+                  <option defaultValue="">---</option>
                   <option value="Low">Low</option>
                   <option value="Mid">Mid</option>
                   <option value="High">High</option>
                 </select>
               </div>
               <div>
-                <DateComp
+                <DueDate
                   value={newTask.date}
                   func={(e) => updateField("date", e.target.value)}
                 />

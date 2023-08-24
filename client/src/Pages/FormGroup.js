@@ -1,23 +1,31 @@
-import ButtonComp from "../components/Button/Button";
-import DateComp from "../components/Date/dateComp";
-import InputComp from "../components/Input/inputComp";
+import Button from "../components/Button";
+import DueDate from "../components/DueDate";
+import Input from "../components/Input";
 import { updateTask } from "../api";
 
 // export { buttonComp };
-export default function FormGroup({
-  updateElem,
-  task,
-  updateField,
-  reset,
-  setSelected,
-  selected,
-}) {
+export default function FormGroup({ task, updateField, reset, setElements }) {
   const options = [
     { value: "", text: "---" },
     { value: "Low", text: "Low" },
     { value: "Mid", text: "Mid" },
     { value: "High", text: "High" },
   ];
+
+  function updateElem(task) {
+    setElements((currentElements) => {
+      currentElements.map((elem) => {
+        if (elem._id === task.ID) {
+          elem.name = task.name;
+          elem.description = task.description;
+          elem.date = task.date;
+          elem.priority = task.priority;
+        }
+        return null;
+      });
+      return currentElements;
+    });
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -29,7 +37,7 @@ export default function FormGroup({
         <div className="mb-3">
           <label className="form-label">Name</label>
           <br />
-          <InputComp
+          <Input
             value={task.name}
             func={(e) => updateField("name", e.target.value)}
           />
@@ -38,8 +46,8 @@ export default function FormGroup({
           <label className="form-label">Priority</label>
           <br />
           <select
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
+            value={task.priority}
+            onChange={(e) => updateField("priority", e.target.value)}
           >
             {options.map((option) => (
               <option key={option.value} value={option.value}>
@@ -64,14 +72,14 @@ export default function FormGroup({
         <div>
           <label>Due date</label>
           <br />
-          <DateComp
+          <DueDate
             value={task.date}
             func={(e) => updateField("date", e.target.value)}
           />
         </div>
-        <ButtonComp
+        <Button
           label={"Save"}
-          func={() => updateTask(task, updateElem, selected, reset)}
+          func={() => updateTask(task, updateElem, reset)}
           buttonClass={"btn btn-primary"}
         />
       </form>
