@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import FormGroup from "./components/FormGroup";
-import ToDoList from "./components/ToDoList";
-import AddTask from "./components/AddTask";
+import FormGroup from "./Pages/FormGroup";
+import ToDoList from "./Pages/ToDoList";
+import AddTask from "./Pages/AddTask";
 
 export default function App() {
   const [elements, setElements] = useState([]);
   const [tickedElements, setTickedElements] = useState([]);
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(" ");
   const [task, setTask] = useState({
     ID: null,
     name: null,

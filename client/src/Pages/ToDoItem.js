@@ -1,3 +1,6 @@
+import ButtonComp from "../components/Button/Button";
+import { deleteTask } from "../api";
+
 export function ToDoItem({
   _id,
   index,
@@ -13,24 +16,6 @@ export function ToDoItem({
   handleChange,
   setSelected,
 }) {
-  function deleteTask(id) {
-    fetch("/api/DeleteTask", {
-      method: "DELETE",
-      body: JSON.stringify({ _id: id }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }).then((response) => {
-      console.log(response.status);
-      if (response.status === 200) {
-        deleteElem(id);
-        console.log("INFO - element deleted");
-      } else {
-        console.log("ERROR - element failed to delete");
-      }
-    });
-  }
-
   return (
     <>
       <div
@@ -58,16 +43,11 @@ export function ToDoItem({
           type="checkbox"
         />
         <label className="left">{name}</label>
-        <div>
-          <button
-            className="delete-button"
-            onClick={() => {
-              deleteTask(_id);
-            }}
-          >
-            Delete user
-          </button>
-        </div>
+        <ButtonComp
+          label={"Delete"}
+          func={() => deleteTask(_id, deleteElem)}
+          buttonClass={"delete-button"}
+        />
       </div>
     </>
   );

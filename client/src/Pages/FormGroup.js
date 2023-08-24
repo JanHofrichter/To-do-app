@@ -1,3 +1,9 @@
+import ButtonComp from "../components/Button/Button";
+import DateComp from "../components/Date/dateComp";
+import InputComp from "../components/Input/inputComp";
+import { updateTask } from "../api";
+
+// export { buttonComp };
 export default function FormGroup({
   updateElem,
   task,
@@ -12,30 +18,6 @@ export default function FormGroup({
     { value: "Mid", text: "Mid" },
     { value: "High", text: "High" },
   ];
-  const updateTask = () => {
-    fetch("/api/Updatedata", {
-      method: "PUT",
-      body: JSON.stringify({
-        _id: task.ID,
-        name: task.name,
-        description: task.description,
-        priority: selected,
-        date: task.date,
-      }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    }).then((response) => {
-      console.log(response.status);
-      if (response.status === 200) {
-        updateElem(task, selected);
-        reset();
-        console.log("INFO - task updated");
-      } else {
-        console.log("ERROR - task failed to update");
-      }
-    });
-  };
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -47,15 +29,14 @@ export default function FormGroup({
         <div className="mb-3">
           <label className="form-label">Name</label>
           <br />
-          <input
-            className="form-control"
-            type="text"
-            name="name"
+          <InputComp
             value={task.name}
-            onChange={(e) => updateField("name", e.target.value)}
+            func={(e) => updateField("name", e.target.value)}
           />
         </div>
         <div>
+          <label className="form-label">Priority</label>
+          <br />
           <select
             value={selected}
             onChange={(e) => setSelected(e.target.value)}
@@ -83,19 +64,16 @@ export default function FormGroup({
         <div>
           <label>Due date</label>
           <br />
-          <input
-            type="date"
-            name="date_until"
+          <DateComp
             value={task.date}
-            onChange={(e) => updateField("date", e.target.value)}
-            min="2023-07-01"
+            func={(e) => updateField("date", e.target.value)}
           />
         </div>
-        <div className="input-group-append">
-          <button onClick={updateTask} className="btn btn-primary">
-            Save changes
-          </button>
-        </div>
+        <ButtonComp
+          label={"Save"}
+          func={() => updateTask(task, updateElem, selected, reset)}
+          buttonClass={"btn btn-primary"}
+        />
       </form>
     </>
   );
