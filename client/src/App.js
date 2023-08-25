@@ -12,8 +12,21 @@ export default function App() {
     description: "",
     date: "",
     priority: "",
+    completed: false,
   });
-  const [seed, setSeed] = useState(1);
+  const [resetUnchecked, setResetUnchecked] = useState(1);
+  const [resetChecked, setResetChecked] = useState(2);
+
+  useEffect(() => {
+    fetch("/api/ListTasks")
+      .then((response) => {
+        console.log(response.status);
+        return response.json();
+      })
+      .then((data) => {
+        setElements(data);
+      });
+  }, []);
 
   //Update one field
   const updateField = (fieldName, newValue) => {
@@ -28,19 +41,12 @@ export default function App() {
   };
 
   const reset = () => {
-    setSeed(Math.random());
+    setResetUnchecked(Math.random());
+    setResetChecked(Math.random());
+    while (resetChecked === resetUnchecked) {
+      setResetUnchecked(Math.random());
+    }
   };
-
-  useEffect(() => {
-    fetch("/api/ListTasks")
-      .then((response) => {
-        console.log(response.status);
-        return response.json();
-      })
-      .then((data) => {
-        setElements(data);
-      });
-  }, []);
 
   return (
     <>
@@ -50,18 +56,23 @@ export default function App() {
           <h1>To-Do-App</h1>
           <AddTask setElements={setElements} />
           <ToDoList
-            key={seed}
-            elements={elements}
+            key={resetUnchecked}
+            elements={elements.filter((elem) => elem.completed === false)}
             handleChange={handleChange}
             setElements={setElements}
+            reset={reset}
           />
-          {/* {tickedElements !== [] && <h1>Tickled Tasks</h1>}
-          {tickedElements.map((elem, index) => {
-            return <li>elem.name</li>;
-          })} */}
+          <h1>Completed tasks</h1>
+          <ToDoList
+            key={resetChecked}
+            elements={elements.filter((elem) => elem.completed === true)}
+            handleChange={handleChange}
+            setElements={setElements}
+            reset={reset}
+          />
         </div>
         <div className="fourth">
-          {task.name !== "" && (
+          {task.description !== "" && (
             <FormGroup
               updateField={updateField}
               task={task}

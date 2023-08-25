@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { ToDoItem } from "./ToDoItem";
-export default function ToDoList({ elements, handleChange, setElements }) {
+export default function ToDoList({
+  elements,
+  handleChange,
+  setElements,
+  reset,
+}) {
   const [selecteIndex, setSelectedIndex] = useState(-1);
 
   return (
@@ -11,11 +16,12 @@ export default function ToDoList({ elements, handleChange, setElements }) {
           <ToDoItem
             {...elem}
             index={index}
-            key={elem._id}
+            key={index}
             selecteIndex={selecteIndex}
             setSelectedIndex={setSelectedIndex}
             handleChange={handleChange}
             setElements={setElements}
+            reset={reset}
           />
         );
       })}

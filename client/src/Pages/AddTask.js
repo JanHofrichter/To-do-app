@@ -7,7 +7,6 @@ import DueDate from "../components/DueDate";
 export default function AddTask({ setElements }) {
   const [newTask, setNewTask] = useState({
     name: "",
-    description: "",
     priority: "",
     date: "",
   });
@@ -17,7 +16,6 @@ export default function AddTask({ setElements }) {
       ...prevFields,
       [fieldName]: newValue,
     }));
-    console.log(fieldName, newValue);
   };
 
   function addElements(id, date_created, newTask) {
@@ -27,10 +25,11 @@ export default function AddTask({ setElements }) {
         {
           _id: id,
           name: newTask.name,
-          description: newTask.description,
+          description: " ",
           date: newTask.date,
           priority: newTask.priority,
           created_date: date_created,
+          completed: false,
         },
       ];
     });
