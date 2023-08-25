@@ -6,10 +6,11 @@ export const addUser = (newTask, addElements) => {
     body: JSON.stringify({
       _id: id,
       name: newTask.name,
-      description: "",
+      description: " ",
       date: newTask.date,
       priority: newTask.priority,
       created_date: date_created,
+      completed: false,
     }),
     headers: {
       "Content-type": "application/json",
@@ -43,6 +44,27 @@ export const updateTask = (task, updateElem, reset) => {
     if (response.status === 200) {
       updateElem(task);
       reset();
+      console.log("INFO - task updated");
+    } else {
+      console.log("ERROR - task failed to update");
+    }
+  });
+};
+
+export const updateTaskField = (ID, completed, updateChecked) => {
+  fetch("/api/Updatedata", {
+    method: "PUT",
+    body: JSON.stringify({
+      _id: ID,
+      completed: completed,
+    }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  }).then((response) => {
+    console.log(response.status);
+    if (response.status === 200) {
+      updateChecked(ID, completed);
       console.log("INFO - task updated");
     } else {
       console.log("ERROR - task failed to update");

@@ -1,5 +1,6 @@
 import Button from "../components/Button";
 import { deleteTask } from "../api";
+import { updateTaskField } from "../api";
 
 export function ToDoItem({
   _id,
@@ -13,33 +14,25 @@ export function ToDoItem({
   selecteIndex,
   handleChange,
   setElements,
+  reset,
 }) {
-  // function toggleElem(id, name, description, date) {
-  //   setElements((currentElements) => {
-  //     return currentElements.map((elem) => {
-  //       if (elem._id === id) {
-  //         deleteElem(id);
-  //         setTickedElements((currentElements) => {
-  //           return [
-  //             ...currentElements,
-  //             {
-  //               _id: id,
-  //               name: name,
-  //               description: description,
-  //               finish_date: date,
-  //             },
-  //           ];
-  //         });
-  //       }
-  //       return elem;
-  //     });
-  //   });
-  // }
-
   function deleteElem(id) {
     setElements((currentElements) => {
       return currentElements.filter((elem) => elem._id !== id);
     });
+  }
+
+  function updateChecked(ID, completed) {
+    setElements((currentElements) => {
+      currentElements.map((elem) => {
+        if (elem._id === ID) {
+          elem.completed = completed;
+        }
+        return null;
+      });
+      return currentElements;
+    });
+    reset();
   }
 
   return (
@@ -58,16 +51,21 @@ export function ToDoItem({
             description: description,
             date: date,
             priority: priority,
+            completed: completed,
           });
         }}
       >
         <input
           className="form-check-input me-1 left"
-          checked={completed}
-          // onChange={(e) => toggleElem(_id, name, description, date)}
+          defaultChecked={completed}
+          onChange={(e) =>
+            updateTaskField(_id, e.target.checked, updateChecked)
+          }
           type="checkbox"
         />
-        <label className="left">{name}</label>
+        <label className={completed === true ? "crossed left" : "left"}>
+          {name}
+        </label>
         <Button
           label={"Delete"}
           func={() => deleteTask(_id, deleteElem)}
