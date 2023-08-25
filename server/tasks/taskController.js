@@ -20,7 +20,6 @@ async function listCollection(req, res) {
   try {
     const database = client.db("mydb");
     const product = database.collection("mycollection");
-    //const objects = await product.find({}, {projection: {_id: 0}}).sort({latdec: 1}).toArray();
     const objects = await product.find().toArray();
     res.status(200).json(objects);
   } catch (err) {
