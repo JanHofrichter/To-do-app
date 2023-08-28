@@ -1,11 +1,51 @@
-.container {
+.main-container {
   display: flex;
+  height: 100vh; /* Make sure the container covers the full viewport height */
+}
+
+.color-div-red {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}
+.color-div-orange {
+  width: 20px;
+  height: 20px;
+  background-color: orange;
+}
+.color-div-yellow {
+  width: 20px;
+  height: 20px;
+  background-color: yellow;
+}
+.color-div-grey {
+  width: 20px;
+  height: 20px;
+  background-color: grey;
+}
+
+.inline {
+  display: inline-block;
 }
 
 .fourth {
   width: 25%;
   align-items: center;
+  /* background-color: #201f1e; */
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
 }
+
+.formElem {
+  /* background-color: #252423; */
+  flex: 1;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
 .threequarters {
   width: 75%;
   align-items: center;
@@ -14,6 +54,7 @@
 .half {
   width: 50%;
   align-items: center;
+  border-radius: 10px;
 }
 .right {
   float: right;
@@ -68,7 +109,20 @@ button {
 .crossed {
   text-decoration: line-through;
 }
-/* .vl {
-  border-left: 6px solid rgb(165, 164, 164);
+.vl {
+  border-left: 6px solid rgb(216, 216, 216);
   height: 500px;
-} */
+  left: 40%;
+  margin-left: 0px;
+  top: 0;
+}
+
+.style {
+  width: 50px;
+  height: 50px;
+  background-color: red;
+}
+
+.full-width {
+  width: calc(100% - 10px);
+}
