@@ -1,66 +1,39 @@
-import Button from "../components/Button";
-import { deleteTask } from "../api";
 import { updateTaskField } from "../api";
 
-export function ToDoItem({
-  _id,
-  index,
-  completed,
-  name,
-  description,
-  date,
-  priority,
-  setSelectedIndex,
-  selecteIndex,
-  handleChange,
-  setElements,
-  reset,
-  updateElemField,
-}) {
-  function deleteElem(id) {
-    setElements((currentElements) => {
-      return currentElements.filter((elem) => elem._id !== id);
-    });
-  }
-
+export function ToDoItem({ elem, handleChange, updateElemField }) {
   return (
     <>
       <div className="inline-elements">
         <div
           className={
-            priority === "High"
+            elem.priority === "High"
               ? "color-div-red"
-              : priority === "Mid"
+              : elem.priority === "Mid"
               ? "color-div-orange"
-              : priority === "Low"
+              : elem.priority === "Low"
               ? "color-div-yellow"
               : "color-div-grey"
           }
         ></div>
         <div
-          className={
-            selecteIndex === index
-              ? "list-group-item list-group-item-primary clickable-button full-width"
-              : "list-group-item clickable-button full-width"
-          }
+          className="list-group-item clickable-button full-width"
           onClick={() => {
-            setSelectedIndex(index);
             handleChange({
-              ID: _id,
-              name: name,
-              description: description,
-              date: date,
-              priority: priority,
-              completed: completed,
+              ID: elem._id,
+              name: elem.name,
+              description: elem.description,
+              date: elem.date,
+              priority: elem.priority,
+              completed: elem.completed,
             });
           }}
         >
           <input
             className="form-check-input me-1 left"
-            defaultChecked={completed}
+            defaultChecked={elem.completed}
             onChange={(e) =>
               updateTaskField(
-                _id,
+                elem._id,
                 "completed",
                 e.target.checked,
                 updateElemField
@@ -68,14 +41,9 @@ export function ToDoItem({
             }
             type="checkbox"
           />
-          <label className={completed === true ? "crossed left" : "left"}>
-            {name}
+          <label className={elem.completed === true ? "crossed left" : "left"}>
+            {elem.name}
           </label>
-          <Button
-            label={"Delete"}
-            func={() => deleteTask(_id, deleteElem)}
-            buttonClass={"delete-button"}
-          />
         </div>
       </div>
     </>

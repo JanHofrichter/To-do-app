@@ -62,6 +62,7 @@ export default function App() {
       setResetUnchecked(Math.random());
     }
   };
+
   return (
     <>
       <div className="main-container">
@@ -73,8 +74,6 @@ export default function App() {
             key={resetUnchecked}
             elements={elements.filter((elem) => elem.completed === false)}
             handleChange={handleChange}
-            setElements={setElements}
-            reset={reset}
             updateElemField={updateElemField}
           />
           <h1>Completed tasks</h1>
@@ -82,8 +81,6 @@ export default function App() {
             key={resetChecked}
             elements={elements.filter((elem) => elem.completed === true)}
             handleChange={handleChange}
-            setElements={setElements}
-            reset={reset}
             updateElemField={updateElemField}
           />
         </div>
