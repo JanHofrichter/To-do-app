@@ -3,6 +3,8 @@ import DueDate from "../components/DueDate";
 import Input from "../components/Input";
 import { updateTaskField } from "../api";
 import useOutsideClick from "../Hooks/useOutsideClick";
+import { deleteTask } from "../api";
+import Button from "../components/Button";
 
 // export { buttonComp };
 export default function FormGroup({
@@ -10,6 +12,7 @@ export default function FormGroup({
   updateField,
   reset,
   updateElemField,
+  setElements,
 }) {
   const [status1, setStatus1] = useState(false);
   const [status2, setStatus2] = useState(false);
@@ -49,8 +52,7 @@ export default function FormGroup({
       task.ID,
       Object.keys(obj)[0],
       Object.values(obj)[0],
-      updateElemField,
-      reset
+      updateElemField
     );
     setStatus1(false);
     setStatus2(false);
@@ -58,6 +60,11 @@ export default function FormGroup({
     setStatus4(false);
   }
 
+  function deleteElem(id) {
+    setElements((currentElements) => {
+      return currentElements.filter((elem) => elem._id !== id);
+    });
+  }
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -129,6 +136,11 @@ export default function FormGroup({
           </div>
         </div>
       </form>
+      <Button
+        label={"Delete"}
+        func={() => deleteTask(task.ID, deleteElem)}
+        buttonClass={"delete-button"}
+      />
     </>
   );
 }
