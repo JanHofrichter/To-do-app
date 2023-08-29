@@ -51,12 +51,12 @@ export const updateTask = (task, updateElem, reset) => {
   });
 };
 
-export const updateTaskField = (ID, completed, updateChecked) => {
+export const updateTaskField = (ID, field, value, func, reset) => {
   fetch("/api/Updatedata", {
     method: "PUT",
     body: JSON.stringify({
       _id: ID,
-      completed: completed,
+      [field]: value,
     }),
     headers: {
       "Content-type": "application/json",
@@ -64,7 +64,8 @@ export const updateTaskField = (ID, completed, updateChecked) => {
   }).then((response) => {
     console.log(response.status);
     if (response.status === 200) {
-      updateChecked(ID, completed);
+      func(ID, field, value);
+      reset();
       console.log("INFO - task updated");
     } else {
       console.log("ERROR - task failed to update");
