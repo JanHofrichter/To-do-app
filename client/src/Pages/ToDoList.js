@@ -5,6 +5,7 @@ export default function ToDoList({
   handleChange,
   setElements,
   reset,
+  updateElemField,
 }) {
   const [selecteIndex, setSelectedIndex] = useState(-1);
 
@@ -22,6 +23,7 @@ export default function ToDoList({
             handleChange={handleChange}
             setElements={setElements}
             reset={reset}
+            updateElemField={updateElemField}
           />
         );
       })}

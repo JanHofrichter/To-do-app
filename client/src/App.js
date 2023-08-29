@@ -5,7 +5,6 @@ import AddTask from "./Pages/AddTask";
 
 export default function App() {
   const [elements, setElements] = useState([]);
-  // const [tickedElements, setTickedElements] = useState([]);
   const [task, setTask] = useState({
     ID: "",
     name: "",
@@ -40,6 +39,22 @@ export default function App() {
     setTask(updatedData);
   };
 
+  function updateElemField(id, fieldName, newValue) {
+    setElements((currentElements) => {
+      const updatedElements = currentElements.map((elem) => {
+        if (elem._id === id) {
+          return {
+            ...elem,
+            [fieldName]: newValue,
+          };
+        }
+        return elem;
+      });
+      return updatedElements;
+    });
+    reset();
+  }
+
   const reset = () => {
     setResetUnchecked(Math.random());
     setResetChecked(Math.random());
@@ -47,10 +62,9 @@ export default function App() {
       setResetUnchecked(Math.random());
     }
   };
-
   return (
     <>
-      <div className="container">
+      <div className="main-container">
         <div className="fourth"></div>
         <div className="half">
           <h1>To-Do-App</h1>
@@ -61,6 +75,7 @@ export default function App() {
             handleChange={handleChange}
             setElements={setElements}
             reset={reset}
+            updateElemField={updateElemField}
           />
           <h1>Completed tasks</h1>
           <ToDoList
@@ -69,15 +84,18 @@ export default function App() {
             handleChange={handleChange}
             setElements={setElements}
             reset={reset}
+            updateElemField={updateElemField}
           />
         </div>
         <div className="fourth">
+          {/* <div className="vl"></div> */}
           {task.description !== "" && (
             <FormGroup
               updateField={updateField}
               task={task}
               reset={reset}
               setElements={setElements}
+              updateElemField={updateElemField}
             />
           )}
         </div>

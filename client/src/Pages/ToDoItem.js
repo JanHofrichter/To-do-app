@@ -15,24 +15,12 @@ export function ToDoItem({
   handleChange,
   setElements,
   reset,
+  updateElemField,
 }) {
   function deleteElem(id) {
     setElements((currentElements) => {
       return currentElements.filter((elem) => elem._id !== id);
     });
-  }
-
-  function updateChecked(ID, completed) {
-    setElements((currentElements) => {
-      currentElements.map((elem) => {
-        if (elem._id === ID) {
-          elem.completed = completed;
-        }
-        return null;
-      });
-      return currentElements;
-    });
-    reset();
   }
 
   return (
@@ -71,7 +59,12 @@ export function ToDoItem({
             className="form-check-input me-1 left"
             defaultChecked={completed}
             onChange={(e) =>
-              updateTaskField(_id, e.target.checked, updateChecked)
+              updateTaskField(
+                _id,
+                "completed",
+                e.target.checked,
+                updateElemField
+              )
             }
             type="checkbox"
           />

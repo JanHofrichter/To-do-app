@@ -1,14 +1,16 @@
 import React, { useRef, useState } from "react";
-
-import Button from "../components/Button";
 import DueDate from "../components/DueDate";
 import Input from "../components/Input";
-import { updateTask } from "../api";
 import { updateTaskField } from "../api";
 import useOutsideClick from "../Hooks/useOutsideClick";
 
 // export { buttonComp };
-export default function FormGroup({ task, updateField, reset, setElements }) {
+export default function FormGroup({
+  task,
+  updateField,
+  reset,
+  updateElemField,
+}) {
   const [status1, setStatus1] = useState(false);
   const [status2, setStatus2] = useState(false);
   const [status3, setStatus3] = useState(false);
@@ -27,36 +29,6 @@ export default function FormGroup({ task, updateField, reset, setElements }) {
     { value: "Mid", text: "Mid" },
     { value: "High", text: "High" },
   ];
-
-  function updateElem(task) {
-    setElements((currentElements) => {
-      currentElements.map((elem) => {
-        if (elem._id === task.ID) {
-          elem.name = task.name;
-          elem.description = task.description;
-          elem.date = task.date;
-          elem.priority = task.priority;
-        }
-        return null;
-      });
-      return currentElements;
-    });
-  }
-
-  function updateElemField(id, fieldName, newValue) {
-    setElements((currentElements) => {
-      const updatedElements = currentElements.map((elem) => {
-        if (elem._id === id) {
-          return {
-            ...elem,
-            [fieldName]: newValue,
-          };
-        }
-        return elem;
-      });
-      return updatedElements;
-    });
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -156,11 +128,6 @@ export default function FormGroup({ task, updateField, reset, setElements }) {
             />
           </div>
         </div>
-        <Button
-          label={"Save"}
-          func={() => updateTask(task, updateElem, reset)}
-          buttonClass={"btn btn-primary"}
-        />
       </form>
     </>
   );

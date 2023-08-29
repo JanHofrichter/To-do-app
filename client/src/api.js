@@ -26,32 +26,7 @@ export const addUser = (newTask, addElements) => {
   });
 };
 
-export const updateTask = (task, updateElem, reset) => {
-  fetch("/api/Updatedata", {
-    method: "PUT",
-    body: JSON.stringify({
-      _id: task.ID,
-      name: task.name,
-      description: task.description,
-      priority: task.priority,
-      date: task.date,
-    }),
-    headers: {
-      "Content-type": "application/json",
-    },
-  }).then((response) => {
-    console.log(response.status);
-    if (response.status === 200) {
-      updateElem(task);
-      reset();
-      console.log("INFO - task updated");
-    } else {
-      console.log("ERROR - task failed to update");
-    }
-  });
-};
-
-export const updateTaskField = (ID, field, value, func, reset) => {
+export const updateTaskField = (ID, field, value, func) => {
   fetch("/api/Updatedata", {
     method: "PUT",
     body: JSON.stringify({
@@ -65,7 +40,6 @@ export const updateTaskField = (ID, field, value, func, reset) => {
     console.log(response.status);
     if (response.status === 200) {
       func(ID, field, value);
-      reset();
       console.log("INFO - task updated");
     } else {
       console.log("ERROR - task failed to update");
