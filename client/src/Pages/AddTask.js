@@ -46,9 +46,14 @@ export default function AddTask({ setElements }) {
         <ul className="list-group">
           <li className="list-group-item">
             <div className="input-group">
-              <Input
+              <input
+                autoFocus
+                placeholder="Add task"
+                className="form-control"
+                type="text"
+                name="name"
                 value={newTask.name}
-                func={(e) => updateField("name", e.target.value)}
+                onChange={(e) => updateField("name", e.target.value)}
               />
               <Button
                 label={"Add"}
