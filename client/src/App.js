@@ -11,7 +11,7 @@ export default function App() {
     description: "",
     date: "",
     priority: "",
-    completed: false,
+    completed: "",
   });
   const [resetUnchecked, setResetUnchecked] = useState(1);
   const [resetChecked, setResetChecked] = useState(2);
@@ -68,7 +68,7 @@ export default function App() {
       <div className="main-container">
         <div className="fourth"></div>
         <div className="half">
-          <h1>To-Do-App</h1>
+          <h1>Tasks</h1>
           <AddTask setElements={setElements} />
           <ToDoList
             key={resetUnchecked}
@@ -90,7 +90,6 @@ export default function App() {
             <FormGroup
               updateField={updateField}
               task={task}
-              reset={reset}
               setElements={setElements}
               updateElemField={updateElemField}
             />

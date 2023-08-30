@@ -10,7 +10,6 @@ import Button from "../components/Button";
 export default function FormGroup({
   task,
   updateField,
-  reset,
   updateElemField,
   setElements,
 }) {
@@ -108,7 +107,7 @@ export default function FormGroup({
           <div ref={ref3}>
             <textarea
               placeholder="Add note"
-              rows="2"
+              minRows={2}
               className="form-control"
               type="text"
               name="description"

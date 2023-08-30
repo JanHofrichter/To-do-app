@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { addUser } from "../api";
-// import Input from "../components/Input";
 import Button from "../components/Button";
-import DueDate from "../components/DueDate";
+import DateButton from "../components/DateButton";
 
 export default function AddTask({ setElements }) {
   const [newTask, setNewTask] = useState({
@@ -38,6 +37,7 @@ export default function AddTask({ setElements }) {
   function handleSubmit(e) {
     e.preventDefault();
     updateField("name", "");
+    updateField("date", "");
   }
 
   return (
@@ -72,12 +72,7 @@ export default function AddTask({ setElements }) {
                   <option value="High">High</option>
                 </select>
               </div>
-              <div>
-                <DueDate
-                  value={newTask.date}
-                  func={(e) => updateField("date", e.target.value)}
-                />
-              </div>
+              <DateButton func={updateField} date={newTask.date} />
             </div>
           </li>
         </ul>
