@@ -1,5 +1,11 @@
 import { ToDoItem } from "./ToDoItem";
-export default function ToDoList({ elements, handleChange, updateElemField }) {
+export default function ToDoList({
+  elements,
+  handleChange,
+  updateElemField,
+  chosenIndex,
+  setChosenIndex,
+}) {
   return (
     <ul className="list-group">
       {elements.length === 0 && <p>No item found</p>}
@@ -10,6 +16,8 @@ export default function ToDoList({ elements, handleChange, updateElemField }) {
             key={index}
             handleChange={handleChange}
             updateElemField={updateElemField}
+            chosenIndex={chosenIndex}
+            setChosenIndex={setChosenIndex}
           />
         );
       })}

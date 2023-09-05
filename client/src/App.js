@@ -16,6 +16,8 @@ export default function App() {
   const [resetUnchecked, setResetUnchecked] = useState(1);
   const [resetChecked, setResetChecked] = useState(2);
 
+  const [chosenIndex, setChosenIndex] = useState(null);
+
   useEffect(() => {
     fetch("/api/ListTasks")
       .then((response) => {
@@ -75,6 +77,8 @@ export default function App() {
             elements={elements.filter((elem) => elem.completed === false)}
             handleChange={handleChange}
             updateElemField={updateElemField}
+            chosenIndex={chosenIndex}
+            setChosenIndex={setChosenIndex}
           />
           <h1>Completed tasks</h1>
           <ToDoList
@@ -82,6 +86,8 @@ export default function App() {
             elements={elements.filter((elem) => elem.completed === true)}
             handleChange={handleChange}
             updateElemField={updateElemField}
+            chosenIndex={chosenIndex}
+            setChosenIndex={setChosenIndex}
           />
         </div>
         <div className="fourth">

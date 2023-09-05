@@ -107,7 +107,7 @@ export default function FormGroup({
           <div ref={ref3}>
             <textarea
               placeholder="Add note"
-              minRows={2}
+              rows={2}
               className="form-control"
               type="text"
               name="description"

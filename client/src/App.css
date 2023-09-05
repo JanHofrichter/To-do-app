@@ -87,7 +87,11 @@ button {
   transition: background-color 0.3s;
 }
 .clickable-button:hover {
-  background-color: #ebebeb;
+  background-color: #e7e7e7;
+}
+
+.clicked {
+  background-color: #e7e7e7;
 }
 
 .delete-button {

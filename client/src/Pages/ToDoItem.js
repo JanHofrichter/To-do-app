@@ -1,6 +1,12 @@
 import { updateTaskField } from "../api";
 
-export function ToDoItem({ elem, handleChange, updateElemField }) {
+export function ToDoItem({
+  elem,
+  handleChange,
+  updateElemField,
+  chosenIndex,
+  setChosenIndex,
+}) {
   return (
     <>
       <div className="inline-elements">
@@ -16,7 +22,11 @@ export function ToDoItem({ elem, handleChange, updateElemField }) {
           }
         ></div>
         <div
-          className="list-group-item clickable-button full-width"
+          className={
+            chosenIndex === elem._id
+              ? "list-group-item clickable-button full-width clicked"
+              : "list-group-item clickable-button full-width"
+          }
           onClick={() => {
             handleChange({
               ID: elem._id,
@@ -26,6 +36,7 @@ export function ToDoItem({ elem, handleChange, updateElemField }) {
               priority: elem.priority,
               completed: elem.completed,
             });
+            setChosenIndex(elem._id);
           }}
         >
           <input
